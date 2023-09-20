@@ -1,0 +1,57 @@
+
+
+
+<div class="">
+	<div class="input-containers">
+        <header class="form-header">
+            <h1>Añadir producto</h1>
+            <hr>
+        </header>
+		<div class="input-sections">
+			<div class=''>
+				<h2 class="text-center">Imagen</h2>
+				<div id="media-uploader1" name="media-uploader1" class=""  (drop)="onDrop($event)" (dragover)="onDragOver($event)" style="width: 480px; height: 200px;" (click)="openFileInput()"  >
+                    <input #fileInput type="file" style="display: none" (change)="onDrop($event)"/>
+                        <img #imageElement [src]="selectedImageSrc" style="object-fit: cover; width: 480px; height: 200px;" class="card-img-top" alt="Imagen seleccionada" *ngIf="selectedImageSrc != null">
+					<div class="dz-message" style="color:'.get_option('taxCrt-setting-font').'; cursor: pointer;" *ngIf="!selectedImageSrc">
+						<span class="mx-2"><i class="fa fa-file"></i></span>Arrastre o de click para subir una imagen
+                    </div>
+				</div>
+			</div>
+		</div>
+		<div class="input-sections">
+			<div class=''>
+				<h2 class="text-center">Detalles</h2>
+				<hr />
+				<div class="width-1-1@s">
+					<label class="form-label" for="txtModel">Nombre</label>
+					<div class="form-controls">
+						<input class="input" id="txtModel" type="text" placeholder="">
+					</div>
+				</div>
+				<div class="my-3">
+					<label class="form-label" for="txtBrand">Modelo</label>
+					<div class="form-controls">
+						<input class="input" id="txtBrand" type="text" placeholder="">
+					</div>
+				</div>
+				<div class="my-3">
+					<label class="form-label" for="txtYear">Cantidad inicial</label>
+					<div class="form-controls">
+						<input class="input" id="txtYear" type="text" placeholder="">
+					</div>
+				</div>
+				<div class="my-3">
+					<label class="form-label" for="txtPrice">Tiempo estimado de entrega</label>
+					<div class="form-controls">
+						<input class="input" id="txtPrice" type="text" placeholder="">
+					</div>
+				</div>
+			</div>
+		</div>
+        <footer class="form-footer">
+            <hr style="    margin: 11px 0px;">
+            <button class="btn btn-outline-success" style="margin-left: auto;">Añadir</button>
+        </footer>
+	</div>
+</div>
