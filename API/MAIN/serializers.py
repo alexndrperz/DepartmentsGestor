@@ -89,6 +89,10 @@ class UserAdminRetrieveCreateSerializer(serializers.ModelSerializer):
         user.save()
         return user
     
+class ProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Producto
+        fields = '__all__'
 
 class UserAdminUpdateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False)
@@ -120,4 +124,15 @@ class UserAdminUpdateSerializer(serializers.ModelSerializer):
 class AlmacenSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Almacen
+        fields = '__all__'
+
+class SolicitudesSerializer(serializers.ModelSerializer):
+    department = DepartamentoSerializer(read_only=True)
+    department_id = serializers.IntegerField(write_only=True)
+    producto = ProductoSerializer(read_only=True)
+    producto_id = serializers.IntegerField(write_only=True)
+
+
+    class Meta:
+        model = models.Solicitudes
         fields = '__all__'

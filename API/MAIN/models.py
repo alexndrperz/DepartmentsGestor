@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.db import models
+from .utils import Services
 
 from django.db import models
 from django.contrib.auth.models import (
@@ -30,8 +31,12 @@ class UserManager(BaseUserManager):
 
 
 class Departamento(models.Model):
+    def generate_token():
+        return Services.crear_token()
+
     name = models.CharField( max_length=50)
     recinto = models.ForeignKey(Recinto, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, default=generate_token)
 
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=254, unique=True)
@@ -62,8 +67,11 @@ class Empleado(models.Model):
     encargado = models.ForeignKey(Encargado, on_delete=models.CASCADE)
 
 class Solicitudes(models.Model):
-    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+    department = models.ForeignKey(Departamento, on_delete=models.CASCADE )
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    quantity_asked = models.IntegerField()
     status = models.CharField(max_length=50, choices=(
             ("En proceso","En proceso"),
             ("Aprobada","Aprobada"),

@@ -1,11 +1,22 @@
 
 <main style="margin: 20px 90px;">
+    <app-modal>
+        <app-form-add [modal]="true" *ngIf="solicitudes_view==false"> </app-form-add>
+        <app-form-solicd *ngIf="solicitudes_view==true"></app-form-solicd>
+    </app-modal>
 
     <header>
         <h1>
-            Productos
+            Productos             
         </h1>
         <hr>
+        <ul *ngIf ="solicitudes_view">
+            <li>Departamento: {{dep.name}}</li>
+            <li>Recinto: {{dep.recinto}}</li>
+            
+        </ul>
+        <hr *ngIf="solicitudes_view">
+
     </header>
     <section  class="input">
         <input data-v-a2472bc4="" type="text" id="key" name="key">
@@ -31,8 +42,10 @@
                     <b>Tiempo de entrega: </b> {{item.delivered_hours_estimated}} horas
                 </li>
               </ul>
-              <button type="button" class="btn btn-outline-success">Editar</button>
+              <button type="button" class="btn btn-outline-success" (click)="editar()" *ngIf="solicitudes_view == false">Editar</button>
+              <button type="button" class="btn btn-outline-secondary" (click)="editar()" *ngIf="solicitudes_view == true">Solicitar</button>
             </div>
+
         </div>
     </section>
 </main>

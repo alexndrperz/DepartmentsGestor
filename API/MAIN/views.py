@@ -10,6 +10,23 @@ class RecintoView(viewsets.ModelViewSet):
     serializer_class = serializers.RecintoSerializer
 
 
+class DepartmentView(viewsets.ModelViewSet):
+    queryset = models.Departamento.objects.all()
+
+    def get_item_token_based(self,request,token):
+        try:
+            obj = models.Departamento.objects.get(token=token)
+            return JsonResponse({'department_id':obj.id, 'name':obj.name, 'recinto':obj.recinto.name})
+        except Exception as e:
+            print(e)
+            return JsonResponse({'msg':'No existe'}, status=404)
+
+class SolicitudesView(viewsets.ModelViewSet):
+    queryset = models.Solicitudes.objects.all()
+    serializer_class = serializers.SolicitudesSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        return JsonResponse({'msg':'not allowed'}, status=405)
     
 class AuthView(viewsets.ModelViewSet):
 

@@ -1,7 +1,7 @@
 
 
 
-<div class="">
+<div class="" [ngStyle]="modal ? {'margin-top':'0px'} : {'margin-top':'80px'}">
 	<div class="input-containers">
         <header class="form-header">
             <h1>Añadir producto</h1>
@@ -49,7 +49,7 @@
 				</div>
 			</div>
 		</div>
-        <footer class="form-footer">
+        <footer class="form-footer" *ngIf="!modal">
             <hr style="    margin: 11px 0px;">
             <button class="btn btn-outline-success" style="margin-left: auto;">Añadir</button>
         </footer>

@@ -1,4 +1,4 @@
-import { Component, HostListener,ElementRef,ViewChild } from '@angular/core';
+import { Component, HostListener,ElementRef,ViewChild, Input } from '@angular/core';
 
 @Component({
   selector: 'app-form-add',
@@ -8,6 +8,7 @@ import { Component, HostListener,ElementRef,ViewChild } from '@angular/core';
 export class FormAddComponent {
   @ViewChild('fileInput') fileInput: ElementRef;
   selectedImageSrc: string | ArrayBuffer | null = null;
+  @Input() modal:boolean =  false;
 
   constructor() {
     this.fileInput = new ElementRef(null)

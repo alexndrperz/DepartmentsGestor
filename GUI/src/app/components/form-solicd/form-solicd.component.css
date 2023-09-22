@@ -1,0 +1,9 @@
+.input-section   {
+    max-width: 500px;
+    min-width: 500px;
+}
+
+.input {
+    width: 100%;
+    height: 40px;
+}

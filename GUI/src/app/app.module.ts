@@ -12,6 +12,11 @@ import { ProductsComponent } from './subviews/almacen/products/products.componen
 import { FormAddComponent } from './subviews/almacen/form-add/form-add.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalComponent } from './components/modal/modal.component';
+import { NotFoundComponent } from './views/not-found/not-found.component';
+import { SolicitantesComponent } from './views/solicitantes/solicitantes.component';
+import { FormSolicdComponent } from './components/form-solicd/form-solicd.component';
+import { SolicitudesTableComponent } from './components/solicitudes-table/solicitudes-table.component';
 
 
 @NgModule({
@@ -22,6 +27,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DashboardComponent,
     ProductsComponent,
     FormAddComponent,
+    ModalComponent,
+    NotFoundComponent,
+    SolicitantesComponent,
+    FormSolicdComponent,
+    SolicitudesTableComponent,
 
   ],
   imports: [

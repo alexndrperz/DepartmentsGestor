@@ -1,0 +1,13 @@
+
+
+<div class="modal" [ngClass]="{'modal-entrada': mostrarModal, 'modal-salida': mostrarModal ==false, '':mostrarModal==null}"  role="dialog" style=" background-color: #000000a6;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <ng-content></ng-content>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cerrarModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
