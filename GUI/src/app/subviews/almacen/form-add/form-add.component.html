@@ -12,7 +12,7 @@
 				<h2 class="text-center">Imagen</h2>
 				<div id="media-uploader1" name="media-uploader1" class=""  (drop)="onDrop($event)" (dragover)="onDragOver($event)" style="width: 480px; height: 200px;" (click)="openFileInput()"  >
                     <input #fileInput type="file" style="display: none" (change)="onDrop($event)"/>
-                        <img #imageElement [src]="selectedImageSrc" style="object-fit: cover; width: 480px; height: 200px;" class="card-img-top" alt="Imagen seleccionada" *ngIf="selectedImageSrc != null">
+                        <img #imageElement [src]="product.image">
 					<div class="dz-message" style="color:'.get_option('taxCrt-setting-font').'; cursor: pointer;" *ngIf="!selectedImageSrc">
 						<span class="mx-2"><i class="fa fa-file"></i></span>Arrastre o de click para subir una imagen
                     </div>
@@ -26,25 +26,25 @@
 				<div class="width-1-1@s">
 					<label class="form-label" for="txtModel">Nombre</label>
 					<div class="form-controls">
-						<input class="input" id="txtModel" type="text" placeholder="">
+						<input class="input" id="txtModel" [ngModel]="product.name" type="text" placeholder="">
 					</div>
 				</div>
 				<div class="my-3">
-					<label class="form-label" for="txtBrand">Modelo</label>
+					<label class="form-label" for="txtBrand">Modelo {{product.image}}</label>
 					<div class="form-controls">
-						<input class="input" id="txtBrand" type="text" placeholder="">
+						<input class="input" id="txtBrand" [ngModel]="product.model" type="text" placeholder="">
 					</div>
 				</div>
 				<div class="my-3">
 					<label class="form-label" for="txtYear">Cantidad inicial</label>
 					<div class="form-controls">
-						<input class="input" id="txtYear" type="text" placeholder="">
+						<input class="input" id="txtYear" type="text" [ngModel]="product.quantity_available" placeholder="">
 					</div>
 				</div>
 				<div class="my-3">
 					<label class="form-label" for="txtPrice">Tiempo estimado de entrega</label>
 					<div class="form-controls">
-						<input class="input" id="txtPrice" type="text" placeholder="">
+						<input class="input" id="txtPrice" type="text" placeholder="" [ngModel]="product.delivered_estimated">
 					</div>
 				</div>
 			</div>

@@ -7,8 +7,9 @@ import { Component, Input } from '@angular/core';
 })
 export class ModalComponent {
  mostrarModal: boolean | null = null;
+ productInfo:any | null = null;
 
-  abrirModal() {
+  abrirModalEdicion() {
     this.mostrarModal = true;
   }
 

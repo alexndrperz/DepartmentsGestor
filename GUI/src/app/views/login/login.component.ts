@@ -12,8 +12,8 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   showPassword:boolean = false;
   loginData:any = {
-    username:"",
-    password:"",
+    name:"Mary",
+    password:"12345",
   }
 
   constructor(private apiConnect:ApiConnectService, private router: Router) {
@@ -23,16 +23,20 @@ export class LoginComponent {
   login() {
     this.apiConnect.post('/login',this.loginData )
     .subscribe(
-      (response: any) => {
-        const token:string = response.token
-        const expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() + 1);
-        sessionStorage.setItem('auth', token);
-        this.router.navigate(['/almacen'])
-      },
-      (error:any) => {
-        console.log(error.error)
+      {
+        next: (response: any) => {
+          const token: string = response.access;
+          const expirationDate = new Date();
+          expirationDate.setDate(expirationDate.getDate() + 1);
+          sessionStorage.setItem('auth', token);
+          this.router.navigate(['/almacen']);
+        },
+        error: (error: any) => {
+          console.log(error.error);
+        }
       }
-    )
+    );
+
+
   }
 }

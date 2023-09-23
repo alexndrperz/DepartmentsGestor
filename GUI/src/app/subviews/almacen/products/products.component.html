@@ -1,7 +1,7 @@
 
-<main style="margin: 20px 90px;">
+<main  class="mainCont">
     <app-modal>
-        <app-form-add [modal]="true" *ngIf="solicitudes_view==false"> </app-form-add>
+        <app-form-add [modal]="true" *ngIf="solicitudes_view==false" [product]="selectedProduct" >  </app-form-add>
         <app-form-solicd *ngIf="solicitudes_view==true"></app-form-solicd>
     </app-modal>
 
@@ -15,7 +15,13 @@
             <li>Recinto: {{dep.recinto}}</li>
             
         </ul>
-        <hr *ngIf="solicitudes_view">
+        <ul *ngIf ="!solicitudes_view">
+            <li><b>Usuario:</b> {{userInfo.name}}</li>
+            <li><b>Recinto:</b> {{userInfo.almacen_name}}</li>
+            
+        </ul>
+        <hr >
+
 
     </header>
     <section  class="input">
@@ -28,22 +34,22 @@
     </section>
 
     <section class="cards-container">
-        <div class="card" style="width: 18rem; " *ngFor="let item of data">
+        <div class="card" style="width: 18rem; " *ngFor="let item of products">
             <div class="img-container" style="width: 288px; height: 150px;">
-                <img src="http://placekitten.com/200/300"  style="object-fit: cover; width: 100%; height: 100%;" class="card-img-top" alt="...">
+                <img src="http://127.0.0.1:8000/products/imagen/{{item.id}}" style="object-fit: cover; width: 100%; height: 100%;" class="card-img-top" alt="...">
             </div>
             <div class="card-body">
-              <h5 class="card-title">{{item.name}} {{item.id}}</h5>
+              <h5 class="card-title">{{item.name}}</h5>
               <ul>
                 <li>
-                    <b>Cantidad disponible: </b> {{item.available_quantity}}
+                    <b>Cantidad disponible: </b> {{item.quantity_available}}
                 </li>
                 <li>
-                    <b>Tiempo de entrega: </b> {{item.delivered_hours_estimated}} horas
+                    <b>Tiempo de entrega: </b> {{item.delivered_estimated}} horas
                 </li>
               </ul>
-              <button type="button" class="btn btn-outline-success" (click)="editar()" *ngIf="solicitudes_view == false">Editar</button>
-              <button type="button" class="btn btn-outline-secondary" (click)="editar()" *ngIf="solicitudes_view == true">Solicitar</button>
+              <button type="button" class="btn btn-outline-success" (click)="editar(item)" *ngIf="solicitudes_view == false">Editar</button>
+              <button type="button" class="btn btn-outline-secondary"  (click)="getProductImg(item); editar(item); " *ngIf="solicitudes_view == true">Solicitar</button>
             </div>
 
         </div>

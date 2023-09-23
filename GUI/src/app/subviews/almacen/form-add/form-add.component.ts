@@ -1,18 +1,23 @@
-import { Component, HostListener,ElementRef,ViewChild, Input } from '@angular/core';
+import { Component, HostListener,ElementRef,ViewChild, Input, OnInit, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-form-add',
   templateUrl: './form-add.component.html',
   styleUrls: ['./form-add.component.css']
 })
-export class FormAddComponent {
+export class FormAddComponent implements OnInit{
   @ViewChild('fileInput') fileInput: ElementRef;
   selectedImageSrc: string | ArrayBuffer | null = null;
   @Input() modal:boolean =  false;
+  @Input() product:any;
 
   constructor() {
     this.fileInput = new ElementRef(null)
   }
+  ngOnInit(): void {
+    
+  }
+
 
   openFileInput() {
     this.fileInput.nativeElement.click();
@@ -46,6 +51,7 @@ export class FormAddComponent {
 
   handleImageUpload(files: FileList) {
     const file = files[0];
+    console.log(file)
     if (file) {
       // Cargar la imagen seleccionada como una URL de datos (data URL)
       const reader = new FileReader();

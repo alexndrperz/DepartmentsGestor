@@ -27,3 +27,9 @@
     grid-template-columns: repeat(auto-fit, minmax(280px,280px));
     gap: 30px;
   }
+
+.mainCont {
+      max-height: 100vh;
+      overflow: auto;
+      padding: 20px 90px;
+}
