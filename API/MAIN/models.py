@@ -9,6 +9,13 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 
+
+def generate_path_file(instance, filename):
+    filename = Services.generate_code()
+
+    if type(instance).__name__ == 'Producto':
+        return f'images/products/{instance.almacen.name}/{filename}.jpg'
+
 class Recinto(models.Model):
     name = models.CharField( max_length=50)
 
@@ -33,7 +40,6 @@ class UserManager(BaseUserManager):
 class Departamento(models.Model):
     def generate_token():
         return Services.crear_token()
-
     name = models.CharField( max_length=50)
     recinto = models.ForeignKey(Recinto, on_delete=models.CASCADE)
     token = models.CharField(max_length=50, default=generate_token)
@@ -47,10 +53,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Almacen(models.Model):
     name = models.CharField(max_length=50)
-    recinto = models.OneToOneField(Recinto, on_delete=models.CASCADE)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    recinto = models.OneToOneField(Recinto, on_delete=models.CASCADE, related_name='almacen')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='almacen')
 
 class Producto(models.Model):
+    image = models.ImageField(upload_to=generate_path_file, null=True, max_length=None)
+    model = models.CharField(max_length=50)
+    delivered_estimated = models.IntegerField()
     name = models.CharField( max_length=50)
     quantity_available = models.IntegerField()
     almacen= models.ForeignKey(Almacen, on_delete=models.CASCADE)

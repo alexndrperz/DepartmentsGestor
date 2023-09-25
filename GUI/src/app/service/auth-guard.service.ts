@@ -13,7 +13,6 @@ export class AuthGuardService {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): boolean {
-    console.log(this.apiServ.isAuth)
     if(this.apiServ.isAuth()){
       return true
     }

@@ -1,8 +1,9 @@
-from django.shortcuts import render
-
+from django.shortcuts import get_object_or_404
+import os
 from rest_framework import viewsets, exceptions, response
-from . import models, serializers
-from django.http import JsonResponse
+from . import models, serializers, permissions
+from django.http import JsonResponse, FileResponse
+from django.conf import settings
 import datetime, jwt
 
 class RecintoView(viewsets.ModelViewSet):
@@ -10,13 +11,62 @@ class RecintoView(viewsets.ModelViewSet):
     serializer_class = serializers.RecintoSerializer
 
 
+
+class ProductView(viewsets.ModelViewSet):
+    queryset = models.Producto.objects.all()
+    permission_classes = [permissions.ProductPermission]
+    
+    def get_product_token_based(self, request):
+        return JsonResponse({})
+    
+    def get_product_image(self, request, id):
+        product = get_object_or_404(models.Producto, id=id)
+        road_img= os.path.join(settings.BASE_DIR,product.image.path)
+        print(road_img)
+        if os.path.exists(road_img):
+            return FileResponse(open(road_img,'rb'),content_type='image/jpeg')
+        else:
+            return JsonResponse({'msg':'La imagen no existe'}, status=404)
+
+    def create_almacen_product(self, request):
+        almacen = request.user.almacen
+        serializer = serializers.ProductoSerializer(data=request.data, context={'almacen':almacen})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return JsonResponse({}, status=201)
+    
+
+    def update_almacen_product(self, request, id):
+        print(request.data,2)
+        product= get_object_or_404(models.Producto, id=id)
+        serializer = serializers.ProductoSerializer(instance=product, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return JsonResponse({'msg':'Updated'})
+        
+    def get_almacen(self, request):
+        almacen  = request.user.almacen
+        products = models.Producto.objects.filter(almacen=almacen)
+        serializer = serializers.ProductoSerializer(products, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+    def get_product_token_based(self, request,token):
+        print(token,33)
+        department = models.Departamento.objects.get(token=token)
+        department = get_object_or_404(models.Departamento, token=token)
+        almacen = department.recinto.almacen
+        products = models.Producto.objects.filter(almacen=almacen)
+        serializer = serializers.ProductoSerializer(products, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+    
 class DepartmentView(viewsets.ModelViewSet):
     queryset = models.Departamento.objects.all()
 
     def get_item_token_based(self,request,token):
         try:
             obj = models.Departamento.objects.get(token=token)
-            return JsonResponse({'department_id':obj.id, 'name':obj.name, 'recinto':obj.recinto.name})
+            return JsonResponse({'department_id':obj.id, 'name':obj.name, 'recinto':obj.recinto.name,'token':obj.token})
         except Exception as e:
             print(e)
             return JsonResponse({'msg':'No existe'}, status=404)

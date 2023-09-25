@@ -36,7 +36,6 @@ export class SolicitantesComponent implements OnInit{
         next: (response:any) => {
           this.solicitudes_view = true
           this.dep = response
-          console.log(response)
           
         },
         error: (error:any) => {

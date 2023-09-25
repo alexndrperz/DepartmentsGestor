@@ -2,6 +2,9 @@ import { Component,Input,OnInit,ViewChild } from '@angular/core';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import jwtDecode from 'jwt-decode'
 import { ApiConnectService } from 'src/app/service/api-connect.service';
+import { FormAddComponent } from '../form-add/form-add.component';
+import { ActivatedRoute } from '@angular/router';
+import { FormSolicdComponent } from 'src/app/components/form-solicd/form-solicd.component';
 
 
 @Component({
@@ -10,27 +13,36 @@ import { ApiConnectService } from 'src/app/service/api-connect.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit{
-  constructor(private apiConnect:ApiConnectService) {}
+  constructor(private apiConnect:ApiConnectService, private Actrouter:ActivatedRoute) {}
 
   
   ngOnInit(): void {
+    console.log(this.solicitudes_view)
     if (this.solicitudes_view == false) {
-
       const value:string | null = sessionStorage.getItem('auth')
       if(value != null) {
         this.userInfo = jwtDecode(value)
-
+        this.getProductsAlm()
       }
-      this.getProducts()
+    }
+    else if (this.solicitudes_view){
+      this.Actrouter.params.subscribe(params => {
+        this.token_dep = params['dept_token'] || null
+        if (this.token_dep != null) {
+          this.getProductsSolic()
+        } 
+      })
     }
   }
 
 
   @ViewChild(ModalComponent) modalComp!:ModalComponent;
+  @ViewChild(FormAddComponent) formAdd!:FormAddComponent;
+  @ViewChild(FormSolicdComponent) formSolic!:FormSolicdComponent;
   @Input() solicitudes_view:boolean | null = false
   @Input() dep:any= null;
   userInfo:any = null; 
-
+  token_dep:string =""
 
 
   products:any[] = []
@@ -39,7 +51,12 @@ export class ProductsComponent implements OnInit{
     
   };
 
-  getProducts() {
+  closeModal() {
+    this.modalComp.cerrarModal()
+  }
+
+
+  getProductsAlm() {
     this.apiConnect.getSecure('/products/almacen')
     .subscribe({
       next: (response:any) => {
@@ -47,6 +64,25 @@ export class ProductsComponent implements OnInit{
         this.products = response
       }
     })
+  }
+
+  saveSolic() {
+    console.log("el final alan")
+    this.formSolic.createSolict()
+  }
+
+  getProductsSolic() {
+    this.apiConnect.get(`/products/${this.token_dep}`)
+    .subscribe({
+      next: (response:any) => {
+        console.log(response);
+        this.products = response
+      }
+    })
+  }
+
+  makeSolic() {
+    this.modalComp.abrirModalSolic()
   }
 
   getProductImg(item:any) {
@@ -65,6 +101,12 @@ export class ProductsComponent implements OnInit{
         }
       }
     )
+    
+  }
+
+  saveEdit() {
+    console.log("emitter")
+    this.formAdd.SaveChanges()
     
   }
 

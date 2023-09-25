@@ -1,8 +1,8 @@
 
 <main  class="mainCont">
-    <app-modal>
-        <app-form-add [modal]="true" *ngIf="solicitudes_view==false" [product]="selectedProduct" >  </app-form-add>
-        <app-form-solicd *ngIf="solicitudes_view==true"></app-form-solicd>
+    <app-modal (saveChanges)="saveEdit()" (solict)="saveSolic()">
+        <app-form-add [modal]="true" (updt)="getProductsAlm();closeModal()" *ngIf="solicitudes_view==false" [product]="selectedProduct" >  </app-form-add>
+        <app-form-solicd *ngIf="solicitudes_view==true" ></app-form-solicd>
     </app-modal>
 
     <header>
@@ -49,7 +49,7 @@
                 </li>
               </ul>
               <button type="button" class="btn btn-outline-success" (click)="editar(item)" *ngIf="solicitudes_view == false">Editar</button>
-              <button type="button" class="btn btn-outline-secondary"  (click)="getProductImg(item); editar(item); " *ngIf="solicitudes_view == true">Solicitar</button>
+              <button type="button" class="btn btn-outline-secondary"  (click)="makeSolic()" *ngIf="solicitudes_view == true">Solicitar</button>
             </div>
 
         </div>

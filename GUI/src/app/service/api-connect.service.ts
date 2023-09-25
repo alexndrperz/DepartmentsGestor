@@ -17,6 +17,7 @@ export class ApiConnectService {
 
   getSecure(route:string): any {
     const token = sessionStorage.getItem('auth');
+
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `JWT ${token}`);
       return this.http.get(`${this.host}${route}`, { headers });
@@ -27,8 +28,26 @@ export class ApiConnectService {
     return this.http.get(`${this.host}${route}`,{responseType: 'blob'});
   }
 
-  post(route:string, data:any):Observable<any> {
-    return  this.http.post<HttpResponse<any>>(`${this.host}${route}`, data, {withCredentials:true})
+  postSecure(route:string, data:any):any {
+    const token = sessionStorage.getItem('auth');
+
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `JWT ${token}`);
+      return this.http.post<HttpResponse<any>>(`${this.host}${route}`, data, { headers });
+    }
+  }
+
+  putSecure(route:string, data:any):any {
+    const token = sessionStorage.getItem('auth');
+
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `JWT ${token}`);
+      return this.http.put<HttpResponse<any>>(`${this.host}${route}`, data, { headers });
+    }
+  }
+
+  post(route:string, data:any):any {
+      return this.http.post<HttpResponse<any>>(`${this.host}${route}`, data);
   }
 
   isAuth():boolean {

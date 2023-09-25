@@ -1,7 +1,19 @@
 from rest_framework import serializers
+import rest_framework_simplejwt.serializers as jwt_serializer
+from rest_framework_simplejwt.tokens import Token
 from . import models
 from django.contrib.auth.models import Group
 from django.http import JsonResponse
+
+
+class CustomTokenObtainSerializer(jwt_serializer.TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user) -> Token:
+        token = super().get_token(user)
+        token['almacen_id'] = user.almacen.id
+        token['name'] = user.name
+        token['almacen_name'] = user.almacen.name
+        return token
 
 class RecintoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,6 +48,12 @@ class DepartamentoSerializer(serializers.ModelSerializer):
         print(validated_data)
         department = models.Departamento.objects.create(**validated_data)
         return department
+
+class AlmacenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Almacen
+        fields = '__all__'
+
 
 class UserAdminRetrieveCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -90,9 +108,16 @@ class UserAdminRetrieveCreateSerializer(serializers.ModelSerializer):
         return user
     
 class ProductoSerializer(serializers.ModelSerializer):
+    almacen = AlmacenSerializer(read_only=True)
+    
     class Meta:
         model = models.Producto
         fields = '__all__'
+
+    def create(self, validated_data):
+        almacen = self.context['almacen']
+        product = models.Producto.objects.create(almacen=almacen, **validated_data)
+        return product
 
 class UserAdminUpdateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False)
@@ -121,10 +146,7 @@ class UserAdminUpdateSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
         
-class AlmacenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Almacen
-        fields = '__all__'
+
 
 class SolicitudesSerializer(serializers.ModelSerializer):
     department = DepartamentoSerializer(read_only=True)

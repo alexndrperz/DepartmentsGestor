@@ -5,8 +5,9 @@
       <div class="modal-content">
         <ng-content></ng-content>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Save changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cerrarModal()">Close</button>
+          <button type="button" class="btn btn-outline-primary" *ngIf="isEdition" (click)="guardarCambios()">Guardar {{isEdition}}</button>
+          <button type="button" class="btn btn-outline-primary" *ngIf="!isEdition" (click)="guardarSolicitud()" >Solicitar</button>
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="cerrarModal()">Cerrar</button>
         </div>
       </div>
     </div>
