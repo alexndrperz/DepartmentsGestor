@@ -2,3 +2,33 @@
 hr {
     margin: 0.4rem 0 ;
 }
+
+
+.table thead tr th {
+    text-align: center;
+}
+
+.table tbody tr td {
+    text-align: center;
+}
+
+.buttons-td {
+    display: flex;
+    justify-content: space-around;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+
+}
+
+.filters p {
+    font-size: 23px;
+    margin-bottom: 0px;
+    font-weight: 600;
+}
+
+.filters select {
+    max-width: 200px;
+}

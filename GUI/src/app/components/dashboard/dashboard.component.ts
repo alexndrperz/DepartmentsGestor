@@ -9,6 +9,7 @@ import { ApiConnectService } from 'src/app/service/api-connect.service';
 })
 export class DashboardComponent implements OnInit{
   @Input()  solicitudes_view: boolean | null = false; 
+  @Input()  encargados_view: boolean | null = false; 
   
   ngOnInit(): void {
     

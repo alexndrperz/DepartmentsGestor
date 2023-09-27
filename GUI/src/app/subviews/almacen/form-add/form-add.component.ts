@@ -1,4 +1,5 @@
 import { Component, HostListener,ElementRef,ViewChild, Input, OnInit, OnChanges, SimpleChanges, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { ApiConnectService } from 'src/app/service/api-connect.service';
 
@@ -18,7 +19,7 @@ export class FormAddComponent implements OnInit{
   };
   @Output() updt:EventEmitter<any> = new EventEmitter()
 
-  constructor(private apiConnect:ApiConnectService) {
+  constructor(private apiConnect:ApiConnectService, private router:Router) {
     this.fileInput = new ElementRef(null)
   }
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class FormAddComponent implements OnInit{
     this.apiConnect.postSecure('/products/almacen', formData)
     .subscribe({
       next: (response:any) => {
-        console.log(response)
+        this.router.navigate(['/almacen/productos'])
       },
       error:(error:any) => {
         console.log(error)

@@ -1,10 +1,10 @@
 
 <main  class="mainCont">
     <app-modal (saveChanges)="saveEdit()" (solict)="saveSolic()">
-        <app-form-add [modal]="true" (updt)="getProductsAlm();closeModal()" *ngIf="solicitudes_view==false" [product]="selectedProduct" >  </app-form-add>
-        <app-form-solicd *ngIf="solicitudes_view==true" ></app-form-solicd>
+        <app-form-add [modal]="true" (updt)="getProductsAlm();closeModal()" *ngIf="solicitudes_view==false && encargados_view==false" [product]="selectedProduct" >  </app-form-add>
+        <app-form-solicd *ngIf="solicitudes_view==true || encargados_view== true" (isCreated)="this.showAlert=true; closeModal()" ></app-form-solicd>
     </app-modal>
-
+ 
     <header>
         <h1>
             Productos             
@@ -17,6 +17,7 @@
         </ul>
         <ul *ngIf ="!solicitudes_view">
             <li><b>Usuario:</b> {{userInfo.name}}</li>
+            <li *ngIf="encargados_view"><b>Departamento:</b> {{userInfo.name}}</li>
             <li><b>Recinto:</b> {{userInfo.almacen_name}}</li>
             
         </ul>
@@ -32,7 +33,10 @@
               </svg>
         </button>
     </section>
-
+    <div class="alert alert-success alert-dismissible fade show mt-2" role="alert" *ngIf="this.showAlert">
+        Su solicitud se ha realizado con exito, puede consultar el estatus a su encargado
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="this.showAlert = false"></button>
+      </div>
     <section class="cards-container">
         <div class="card" style="width: 18rem; " *ngFor="let item of products">
             <div class="img-container" style="width: 288px; height: 150px;">
@@ -48,8 +52,8 @@
                     <b>Tiempo de entrega: </b> {{item.delivered_estimated}} horas
                 </li>
               </ul>
-              <button type="button" class="btn btn-outline-success" (click)="editar(item)" *ngIf="solicitudes_view == false">Editar</button>
-              <button type="button" class="btn btn-outline-secondary"  (click)="makeSolic()" *ngIf="solicitudes_view == true">Solicitar</button>
+              <button type="button" class="btn btn-outline-success" (click)="editar(item)" *ngIf="solicitudes_view == false && encargados_view==false">Editar</button>
+              <button type="button" class="btn btn-outline-secondary"  (click)="makeSolic(item)" *ngIf="solicitudes_view == true || encargados_view==true">Solicitar</button>
             </div>
 
         </div>

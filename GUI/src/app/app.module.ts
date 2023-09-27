@@ -17,6 +17,10 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
 import { SolicitantesComponent } from './views/solicitantes/solicitantes.component';
 import { FormSolicdComponent } from './components/form-solicd/form-solicd.component';
 import { SolicitudesTableComponent } from './components/solicitudes-table/solicitudes-table.component';
+import { EncargadosComponent } from './views/encargados/encargados.component';
+import { ProductsEncComponent } from './subviews/encargados/products-enc/products-enc.component';
+import { SolicitudesEncComponent } from './subviews/encargados/solicitudes-enc/solicitudes-enc.component';
+
 
 
 @NgModule({
@@ -32,6 +36,9 @@ import { SolicitudesTableComponent } from './components/solicitudes-table/solici
     SolicitantesComponent,
     FormSolicdComponent,
     SolicitudesTableComponent,
+    EncargadosComponent,
+    ProductsEncComponent,
+    SolicitudesEncComponent,
 
   ],
   imports: [

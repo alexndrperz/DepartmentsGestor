@@ -13,6 +13,7 @@ class CustomTokenObtainSerializer(jwt_serializer.TokenObtainPairSerializer):
         token['almacen_id'] = user.almacen.id
         token['name'] = user.name
         token['almacen_name'] = user.almacen.name
+        token['dep_id'] = user.department.id
         return token
 
 class RecintoSerializer(serializers.ModelSerializer):

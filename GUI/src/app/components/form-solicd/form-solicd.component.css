@@ -1,6 +1,18 @@
 .input-section   {
     max-width: 500px;
     min-width: 500px;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.input-section textarea {
+    min-height: 200px;
+    width: 100%;
+    padding: 20px;
+}
+
+.input-section::-webkit-scrollbar {
+    display: none;
 }
 
 .input {

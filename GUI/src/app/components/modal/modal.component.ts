@@ -15,10 +15,13 @@ export class ModalComponent {
   abrirModalEdicion() {
     this.mostrarModal = true;
     this.isEdition = true
+
+    
   }
 
   abrirModalSolic() {
     this.mostrarModal= true
+    console.log(this.isEdition);
   }
 
   guardarCambios() {

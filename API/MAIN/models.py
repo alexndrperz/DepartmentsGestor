@@ -85,4 +85,5 @@ class Solicitudes(models.Model):
             ("En proceso","En proceso"),
             ("Aprobada","Aprobada"),
             ("Rechazada","Rechazada"),
-        ))
+            ("Entregada","Entregada"),
+        ), default='En proceso')

@@ -39,8 +39,12 @@ export class ProductsComponent implements OnInit{
   @ViewChild(ModalComponent) modalComp!:ModalComponent;
   @ViewChild(FormAddComponent) formAdd!:FormAddComponent;
   @ViewChild(FormSolicdComponent) formSolic!:FormSolicdComponent;
+  
   @Input() solicitudes_view:boolean | null = false
+  @Input() encargados_view:boolean | null = false
   @Input() dep:any= null;
+  showAlert:boolean = false;
+  product_id:number = 0;
   userInfo:any = null; 
   token_dep:string =""
 
@@ -68,7 +72,11 @@ export class ProductsComponent implements OnInit{
 
   saveSolic() {
     console.log("el final alan")
-    this.formSolic.createSolict()
+    console.log(this.dep);
+    console.log(this.product_id);
+    
+    
+    this.formSolic.createSolict(this.product_id, this.dep.department_id)
   }
 
   getProductsSolic() {
@@ -81,7 +89,9 @@ export class ProductsComponent implements OnInit{
     })
   }
 
-  makeSolic() {
+  makeSolic(product:any) {
+    this.product_id = product.id 
+    
     this.modalComp.abrirModalSolic()
   }
 

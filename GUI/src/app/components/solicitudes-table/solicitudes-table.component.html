@@ -5,53 +5,36 @@
             Solicitudes
         </h1>
         <hr > 
-        <!-- <table class="table table-hover">
-            <thead>
-                <th scope="col">Id</th>
-                <th>Solicitante</th>
-                <th>Cantidad</th>
-                <th>Departamento</th>
-                <th>Email</th>
-                <th>Producto</th>
-                <th>Estado</th>
-            </thead>
-            <tbody>
-                <td>1</td>
-                <td>Juan</td>
-                <td>5</td>
-                <td>Compras</td>
-                <td>juan@gmail.com</td>
-                <td>Audifonos</td>
-                <td>Atendida</td>
-            </tbody>
-        </table> -->
-
+        <section class="filters">
+          <p>Filtrar: </p>
+          <select class="form-select">
+            <option value="1">N</option>
+          </select>
+        </section>
+        <hr>
         <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th *ngFor="let header of ownHeaders">{{header}} </th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
+              <tr *ngFor ="let solicitud of solicitudes">
+                <td>{{solicitud.id}}</td>
+                <td>{{solicitud.department.name}}</td>
+                <td>{{solicitud.producto.name}}</td>
+                <td>26/9/2023</td>
+                <td>{{solicitud.quantity_asked}}</td>
+                <td>{{solicitud.name}}</td>
+                <td>{{solicitud.email}}</td>
+                <td>{{solicitud.status}}</td>
+                <td class="buttons-td">
+                    <button class="btn btn-outline-success " type="button" *ngIf="solicitud.status  == 'En proceso'"  (click)="modifyStatus(2,solicitud.id)" >Aprobar</button>
+                    <button class="btn btn-outline-primary"  (click)="modifyStatus(2,solicitud.id)" *ngIf="solicitud.status == 'Aprobada'" type="button">Entregar</button>
+                    <button class="btn btn-outline-danger " type="button" *ngIf="solicitud.status  == 'En proceso'"   (click)="modifyStatus(1,solicitud.id)">Rechazar</button>
+                    <button class="btn btn-outline-primary" *ngIf="solicitud.status=='Rechazada' || solicitud.status=='Entregada'">Ver detalles</button>
+                  </td>
+                
               </tr>
             </tbody>
           </table>

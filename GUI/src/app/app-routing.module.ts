@@ -9,6 +9,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
 import { SolicitantesComponent } from './views/solicitantes/solicitantes.component';
 import { SolicitudesTableComponent } from './components/solicitudes-table/solicitudes-table.component';
+import { EncargadosComponent } from './views/encargados/encargados.component';
+import { SolicitudesEncComponent } from './subviews/encargados/solicitudes-enc/solicitudes-enc.component';
+import { ProductsEncComponent } from './subviews/encargados/products-enc/products-enc.component';
 
 
 const routes: Routes = [
@@ -34,6 +37,15 @@ const routes: Routes = [
       {path: 'productos',component:ProductsComponent},
       {path: 'form-add',component:FormAddComponent},
       {path: 'solicitudes',component:SolicitudesTableComponent}
+    ]
+  },
+  {
+    path:'encargados',
+    component: EncargadosComponent,
+    children: [
+      {path:'', redirectTo:'solicitudes', pathMatch:'full'},
+      {path:'solicitudes',component:SolicitudesEncComponent },
+      {path:'products',component:ProductsEncComponent }
     ]
   },
   {

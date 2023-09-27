@@ -12,8 +12,8 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   showPassword:boolean = false;
   loginData:any = {
-    name:"Mary",
-    password:"12345",
+    name:"",
+    password:"",
   }
 
   constructor(private apiConnect:ApiConnectService, private router: Router) {

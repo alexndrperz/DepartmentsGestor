@@ -37,7 +37,6 @@ class ProductView(viewsets.ModelViewSet):
     
 
     def update_almacen_product(self, request, id):
-        print(request.data,2)
         product= get_object_or_404(models.Producto, id=id)
         serializer = serializers.ProductoSerializer(instance=product, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -74,6 +73,31 @@ class DepartmentView(viewsets.ModelViewSet):
 class SolicitudesView(viewsets.ModelViewSet):
     queryset = models.Solicitudes.objects.all()
     serializer_class = serializers.SolicitudesSerializer
+
+
+    def update(self, request, pk):
+        solicitud = get_object_or_404(models.Solicitudes, id=pk)
+        option = request.data.get('option',None)
+        if option:
+            if solicitud.status== "En proceso":
+                if option ==1:
+                    solicitud.status = 'Rechazada'
+                elif option == 2:
+                    solicitud.status = 'Aprobada'
+                else:
+
+                    return JsonResponse({'msg':'Opcion invalida'}, status=400)
+            elif solicitud.status== "Aprobada" and option==2:
+                solicitud.status= "Entregada"
+            else:
+                print(type(option), option)
+                return JsonResponse({'msg':'Opcion invalida'}, status=400)
+        else:
+            print(option)
+            return JsonResponse({'msg':'fomato de request incorrecto'}, status=400)
+        solicitud.save()
+        ser = serializers.SolicitudesSerializer(solicitud)
+        return JsonResponse(ser.data, status=201)
 
     def destroy(self, request, *args, **kwargs):
         return JsonResponse({'msg':'not allowed'}, status=405)
