@@ -8,7 +8,7 @@
 .input-section textarea {
     min-height: 200px;
     width: 100%;
-    padding: 20px;
+    padding: 9px 11px;
 }
 
 .input-section::-webkit-scrollbar {

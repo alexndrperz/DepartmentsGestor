@@ -10,9 +10,14 @@ class CustomTokenObtainSerializer(jwt_serializer.TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user) -> Token:
         token = super().get_token(user)
-        token['almacen_id'] = user.almacen.id
+
         token['name'] = user.name
-        token['almacen_name'] = user.almacen.name
+        token['role'] = list(user.groups.values_list('name', flat=True))   
+        if token['role'] == "Almacen":
+            token['almacen_name'] = user.almacen.name
+            token['almacen_id'] = user.almacen.id
+
+        token['user_email'] = user.email
         token['dep_id'] = user.department.id
         return token
 

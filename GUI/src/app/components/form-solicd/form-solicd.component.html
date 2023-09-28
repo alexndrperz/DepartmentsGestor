@@ -1,14 +1,14 @@
 <div class='input-section'>
     <h2 class="text-center">Detalles</h2>
     <hr />
-    <div class="width-1-1@s">
-        <label class="form-label" for="txtModel">Nombre</label>
+    <div class="width-1-1@s" *ngIf="!encargados_view">
+        <label class="form-label" for="txtModel" >Nombre</label>
         <div class="form-controls">
             <input class="input" id="txtModel" type="text" placeholder="" [(ngModel)] = "solict.name">
         </div>
     </div>
-    <div class="my-3">
-        <label class="form-label" for="txtBrand">Email</label>
+    <div class="my-3" *ngIf="!encargados_view">
+        <label class="form-label" for="txtBrand" >Email</label>
         <div class="form-controls">
             <input class="input" id="txtBrand" type="email" placeholder="" [(ngModel)]="solict.email">
         </div>
@@ -22,7 +22,7 @@
     <div class="my-3">
         <label class="form-label" for="txtYear">Detalles</label>
         <div class="form-controls">
-            <textarea class="textarea" id="txtYear" type="number" value="1" [(ngModel)]="solict.quantity_asked"> </textarea>
+            <textarea class="textarea" id="txtYear" type="number" value="1" [(ngModel)]="solict.details"> </textarea>
         </div>
     </div>
 

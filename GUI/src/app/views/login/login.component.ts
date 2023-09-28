@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiConnectService } from 'src/app/service/api-connect.service';
+import jwtDecode from 'jwt-decode';
 import { Router } from '@angular/router';
 
 @Component({
@@ -26,10 +27,27 @@ export class LoginComponent {
       {
         next: (response: any) => {
           const token: string = response.access;
-          const expirationDate = new Date();
-          expirationDate.setDate(expirationDate.getDate() + 1);
+          const expirationDate = new Date(0);
+          const decodeJwt: any= jwtDecode(response.access) 
+          let jwtExp= decodeJwt.exp
+          let role:string = ""
+          expirationDate.setUTCSeconds(jwtExp)
+          console.log(decodeJwt);
+          
+          console.log(expirationDate)
+          expirationDate.setDate(expirationDate.getDate());
           sessionStorage.setItem('auth', token);
-          this.router.navigate(['/almacen']);
+          if(decodeJwt.role.length >= 0) {
+            role = decodeJwt.role[0]
+          } else {
+            this.router.navigate(['/notFound'])
+          }
+
+          if (role == "Almacen") {
+            this.router.navigate(['/almacen']);
+          } else if(role == "Encargado") {
+            this.router.navigate(['/encargados'])
+          }
         },
         error: (error: any) => {
           console.log(error.error);

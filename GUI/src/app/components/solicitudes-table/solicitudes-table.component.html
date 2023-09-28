@@ -5,11 +5,20 @@
             Solicitudes
         </h1>
         <hr > 
-        <section class="filters">
-          <p>Filtrar: </p>
-          <select class="form-select">
-            <option value="1">N</option>
+        <section class="filters" *ngIf="encargados_view">
+          <div style="display: flex; gap: 10px;">
+            <p>Filtrar: </p>
+          <select class="form-select" [(ngModel)] = "filter_selection" (change)="filterData()">
+            <option value="1" >Propias</option>
+            <option value="2">Por departamento</option>
           </select>
+          </div>
+          
+
+          <button class="btn btn-outline-primary" (click)="getLink()">
+            Copiar link departamento
+          </button>
+
         </section>
         <hr>
         <table class="table table-hover">
@@ -17,8 +26,8 @@
               <tr>
                 <th *ngFor="let header of ownHeaders">{{header}} </th>
               </tr>
-            </thead>
-            <tbody>
+            </thead> 
+            <tbody  *ngIf="!encargados_view">
               <tr *ngFor ="let solicitud of solicitudes">
                 <td>{{solicitud.id}}</td>
                 <td>{{solicitud.department.name}}</td>
@@ -35,6 +44,16 @@
                     <button class="btn btn-outline-primary" *ngIf="solicitud.status=='Rechazada' || solicitud.status=='Entregada'">Ver detalles</button>
                   </td>
                 
+              </tr>
+            </tbody>
+            <tbody  *ngIf="encargados_view">
+              <tr *ngFor ="let solicitud of solicitudes">
+                <td>{{solicitud.id}}</td>
+                <td>26/9/2023</td>
+                <td>{{solicitud.name}}</td>
+                <td>{{solicitud.producto.name}}</td>
+                <td>{{solicitud.quantity_asked}}</td>
+                <td>{{solicitud.status}}</td>
               </tr>
             </tbody>
           </table>

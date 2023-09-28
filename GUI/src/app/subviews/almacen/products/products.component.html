@@ -2,7 +2,7 @@
 <main  class="mainCont">
     <app-modal (saveChanges)="saveEdit()" (solict)="saveSolic()">
         <app-form-add [modal]="true" (updt)="getProductsAlm();closeModal()" *ngIf="solicitudes_view==false && encargados_view==false" [product]="selectedProduct" >  </app-form-add>
-        <app-form-solicd *ngIf="solicitudes_view==true || encargados_view== true" (isCreated)="this.showAlert=true; closeModal()" ></app-form-solicd>
+        <app-form-solicd *ngIf="solicitudes_view==true || encargados_view== true" [encargados_view]="encargados_view" (isCreated)="this.showAlert=true; closeModal()" ></app-form-solicd>
     </app-modal>
  
     <header>
@@ -34,7 +34,7 @@
         </button>
     </section>
     <div class="alert alert-success alert-dismissible fade show mt-2" role="alert" *ngIf="this.showAlert">
-        Su solicitud se ha realizado con exito, puede consultar el estatus a su encargado
+        Su solicitud se ha realizado con exito {{!encargados_view ?  'puede consultar el estatus a su encargado' : ''}} 
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" (click)="this.showAlert = false"></button>
       </div>
     <section class="cards-container">

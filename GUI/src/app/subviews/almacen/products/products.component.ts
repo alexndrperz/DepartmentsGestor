@@ -22,10 +22,21 @@ export class ProductsComponent implements OnInit{
       const value:string | null = sessionStorage.getItem('auth')
       if(value != null) {
         this.userInfo = jwtDecode(value)
-        this.getProductsAlm()
+        console.log(this.userInfo);
+        
+        if(this.encargados_view) {
+          console.log("a41234");
+          
+          this.getSecureProductsDepartment()
+        }else {
+          this.getProductsAlm()
+        }
+
       }
     }
     else if (this.solicitudes_view){
+      console.log("22");
+      
       this.Actrouter.params.subscribe(params => {
         this.token_dep = params['dept_token'] || null
         if (this.token_dep != null) {
@@ -59,6 +70,17 @@ export class ProductsComponent implements OnInit{
     this.modalComp.cerrarModal()
   }
 
+  getSecureProductsDepartment() {
+    this.apiConnect.getSecure('/encargado/products')
+    .subscribe({
+      next: (response:any) => {
+        this.products = response
+      },
+      error: (error:any) => {
+        console.log(error)
+      }
+    })
+  }
 
   getProductsAlm() {
     this.apiConnect.getSecure('/products/almacen')
@@ -75,11 +97,17 @@ export class ProductsComponent implements OnInit{
     console.log(this.dep);
     console.log(this.product_id);
     
+    if(!this.encargados_view) {
+      this.formSolic.createSolict(this.product_id, this.dep.department_id)
+    }
+    else {
+      this.formSolic.createSolict(this.product_id)
+    }
     
-    this.formSolic.createSolict(this.product_id, this.dep.department_id)
   }
 
   getProductsSolic() {
+    console.log("jjjj")
     this.apiConnect.get(`/products/${this.token_dep}`)
     .subscribe({
       next: (response:any) => {

@@ -13,28 +13,72 @@ export class SolicitudesTableComponent implements OnInit {
   ownHeaders:string[] = ['Id', 'Departamento', 'Producto','Fecha','Cantidad', 'Solicitante', 'Correo','Estatus', 'Acciones' ] 
 
   solicitudes:any[]=[]
+  filter_selection:string ="1" 
+
   @Input() encargados_view:boolean |null = false
   constructor(private apiConnect:ApiConnectService, private router:Router) {}
   ngOnInit(): void {
     if (this.encargados_view) {
-      this.ownHeaders = ['Id','Fecha','Solicitante','Producto','Estatus']
-      this.getSolictsEnc()
+      this.ownHeaders = ['Id','Fecha','Solicitante','Producto','Cantidad','Estatus']
+      this.getSolictsEnc("own")
     } else {
       this.getSolicts()
     }
     
   }
-
-  getSolictsEnc() {
-    const tokenInfo=sessionStorage.getItem('auth')
-    if(tokenInfo) {
-      const userInfo:any = jwtDecode(tokenInfo)
-      console.log(userInfo)
-
+  getLink() {
+    const tokn = sessionStorage.getItem('auth')
+    let dep;
+    if(tokn) {
+      const userinfo:any =  jwtDecode(tokn)
+      dep = userinfo.dep_id 
     }
-    else {
-      this.router.navigate(['/login'])
+    
+    this.apiConnect.getSecure(`/department/token/${dep}`)
+    .subscribe({
+      next: (response:any) => {
+        console.log(response)
+        navigator.clipboard.writeText(response.route)
+      },
+      error: (error:any) => {
+        console.log(error)
+      }
+    })
+  }
+
+  filterData() {
+    if (this.filter_selection == "1") {
+      this.getSolictsEnc("own")
+    } else if(this.filter_selection == "2") {
+      this.getSolicts()
     }
+  }
+
+
+  getSolictsEnc(parameter:string="") {
+    const tokn = sessionStorage.getItem('auth')
+    let dep_id:number= 0;
+    if(tokn) {
+      let user:any = jwtDecode(tokn)
+      dep_id = user.dep_id
+    }
+    let url = "";
+    if(parameter == "own") {
+      url = "/solicitudes/department?own=t"
+    } else {
+      url = "/solicitudes/department"
+    }
+    
+    this.apiConnect.getSecure(url)
+    .subscribe({
+      next: (response:any) => {
+        console.log(response)
+        this.solicitudes=response
+      },
+      error:(error:any) => {
+        console.log(error)
+      }
+    })
     
   }
 

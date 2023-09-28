@@ -20,6 +20,9 @@ import { SolicitudesTableComponent } from './components/solicitudes-table/solici
 import { EncargadosComponent } from './views/encargados/encargados.component';
 import { ProductsEncComponent } from './subviews/encargados/products-enc/products-enc.component';
 import { SolicitudesEncComponent } from './subviews/encargados/solicitudes-enc/solicitudes-enc.component';
+import { ForbbidenComponent } from './views/forbbiden/forbbiden.component';
+
+
 
 
 
@@ -39,6 +42,8 @@ import { SolicitudesEncComponent } from './subviews/encargados/solicitudes-enc/s
     EncargadosComponent,
     ProductsEncComponent,
     SolicitudesEncComponent,
+    ForbbidenComponent,
+
 
   ],
   imports: [

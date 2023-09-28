@@ -49,8 +49,14 @@ class ProductView(viewsets.ModelViewSet):
         serializer = serializers.ProductoSerializer(products, many=True)
         return JsonResponse(serializer.data, safe=False)
     
+    def get_products_enc(self, request):
+        almacen= request.user.department.recinto.almacen
+        products = models.Producto.objects.filter(almacen=almacen)
+        serializer= serializers.ProductoSerializer(products, many=True)
+        return JsonResponse(serializer.data, safe=False) 
+
     def get_product_token_based(self, request,token):
-        print(token,33)
+        print(2222)
         department = models.Departamento.objects.get(token=token)
         department = get_object_or_404(models.Departamento, token=token)
         almacen = department.recinto.almacen
@@ -70,10 +76,26 @@ class DepartmentView(viewsets.ModelViewSet):
             print(e)
             return JsonResponse({'msg':'No existe'}, status=404)
 
+    def getLink(self, request,id):
+        depart = get_object_or_404(models.Departamento,  id=id)
+        return JsonResponse({'route':f"http://localhost:4200/solicitudes/{depart.token}"})
+    
 class SolicitudesView(viewsets.ModelViewSet):
     queryset = models.Solicitudes.objects.all()
     serializer_class = serializers.SolicitudesSerializer
 
+
+
+    def get_department_solics(self, request):
+        own = request.GET.get('own', None)
+        department = request.user.department
+        if own:
+            solicitudes = models.Solicitudes.objects.filter(name=request.user.name)
+        else:
+            solicitudes = models.Solicitudes.objects.filter(department=department)
+        serializer = serializers.SolicitudesSerializer(solicitudes, many=True)
+        
+        return JsonResponse(serializer.data, safe=False)
 
     def update(self, request, pk):
         solicitud = get_object_or_404(models.Solicitudes, id=pk)
@@ -89,6 +111,8 @@ class SolicitudesView(viewsets.ModelViewSet):
                     return JsonResponse({'msg':'Opcion invalida'}, status=400)
             elif solicitud.status== "Aprobada" and option==2:
                 solicitud.status= "Entregada"
+                solicitud.producto.quantity_available -= solicitud.quantity_asked
+
             else:
                 print(type(option), option)
                 return JsonResponse({'msg':'Opcion invalida'}, status=400)
@@ -96,6 +120,7 @@ class SolicitudesView(viewsets.ModelViewSet):
             print(option)
             return JsonResponse({'msg':'fomato de request incorrecto'}, status=400)
         solicitud.save()
+        solicitud.producto.save()
         ser = serializers.SolicitudesSerializer(solicitud)
         return JsonResponse(ser.data, status=201)
 

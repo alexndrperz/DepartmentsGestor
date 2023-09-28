@@ -46,6 +46,7 @@ class Departamento(models.Model):
 
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=254, unique=True)
+    email = models.EmailField(max_length=50)
     is_staff = models.BooleanField(default=False)
     department = models.ForeignKey(Departamento, on_delete=models.CASCADE,default=1)
     USERNAME_FIELD = 'name'

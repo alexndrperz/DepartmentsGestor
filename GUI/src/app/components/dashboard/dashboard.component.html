@@ -10,6 +10,7 @@
                 </span>
             </a>
         </li>
+
         <li class="has-subnav" *ngIf="solicitudes_view == false && encargados_view== false">
             <a routerLink="/almacen/form-add">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square fa fa-home fa-2x" viewBox="0 0 16 16">
@@ -21,7 +22,7 @@
             </a>
         </li>
         <li class="has-subnav" *ngIf="solicitudes_view == false">
-            <a routerLink="{{encargados_view ? '/encargados/products': '/almacen/solicitudes'}}">
+            <a routerLink="{{encargados_view ? '/encargados/solicitudes': '/almacen/solicitudes'}}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-paper-fill fa fa-home fa-2x" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M6.5 9.5 3 7.5v-6A1.5 1.5 0 0 1 4.5 0h7A1.5 1.5 0 0 1 13 1.5v6l-3.5 2L8 8.75l-1.5.75ZM1.059 3.635 2 3.133v3.753L0 5.713V5.4a2 2 0 0 1 1.059-1.765ZM16 5.713l-2 1.173V3.133l.941.502A2 2 0 0 1 16 5.4v.313Zm0 1.16-5.693 3.337L16 13.372v-6.5Zm-8 3.199 7.941 4.412A2 2 0 0 1 14 16H2a2 2 0 0 1-1.941-1.516L8 10.072Zm-8 3.3 5.693-3.162L0 6.873v6.5Z"/>
                   </svg>
@@ -37,6 +38,16 @@
                 </svg>
                 <span class="nav-text">
                     Realizar solicitud
+                </span>
+            </a>
+        </li>
+        <li *ngIf="solicitudes_view == false && encargados_view== false">
+            <a routerLink="/encargados"  >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-badge-fill fa fa-home fa-2x" viewBox="0 0 16 16">
+                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z"/>
+                  </svg>
+                <span class="nav-text">
+                    Vista Encargado
                 </span>
             </a>
         </li>

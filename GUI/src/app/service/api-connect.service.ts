@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
+import jwtDecode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +55,17 @@ export class ApiConnectService {
     const token:string | null= sessionStorage.getItem('auth')
     if(token) {
       return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  getGroup():string | boolean {
+    const token:string | null= sessionStorage.getItem('auth')
+    if(token) {
+      const tknDecoded:any = jwtDecode(token)
+      return tknDecoded.role[0] 
     }
     else {
       return false;

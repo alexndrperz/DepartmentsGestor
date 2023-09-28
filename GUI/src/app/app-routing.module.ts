@@ -12,9 +12,14 @@ import { SolicitudesTableComponent } from './components/solicitudes-table/solici
 import { EncargadosComponent } from './views/encargados/encargados.component';
 import { SolicitudesEncComponent } from './subviews/encargados/solicitudes-enc/solicitudes-enc.component';
 import { ProductsEncComponent } from './subviews/encargados/products-enc/products-enc.component';
+import { ForbbidenComponent } from './views/forbbiden/forbbiden.component';
 
 
 const routes: Routes = [
+  {
+    path:'notAuthorized',
+    component:ForbbidenComponent
+  },
   {
     path: '',
     redirectTo: 'login',
@@ -42,6 +47,7 @@ const routes: Routes = [
   {
     path:'encargados',
     component: EncargadosComponent,
+    canActivate: [AuthGuardService],
     children: [
       {path:'', redirectTo:'solicitudes', pathMatch:'full'},
       {path:'solicitudes',component:SolicitudesEncComponent },
@@ -56,7 +62,7 @@ const routes: Routes = [
   {
     path:'notFound',
     component:NotFoundComponent
-  }
+  },
 ];
 
 @NgModule({
