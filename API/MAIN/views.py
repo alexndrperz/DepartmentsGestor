@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404
 import os
 from rest_framework import viewsets, exceptions, response
-from . import models, serializers, permissions
+from . import models, serializers, permissions,utils
 from django.http import JsonResponse, FileResponse
 from django.conf import settings
 import datetime, jwt
+from django.core.paginator import Paginator
 
 class RecintoView(viewsets.ModelViewSet):
     queryset = models.Recinto.objects.all()
@@ -85,14 +86,31 @@ class SolicitudesView(viewsets.ModelViewSet):
     serializer_class = serializers.SolicitudesSerializer
 
 
+    def list(self, request):
+        if request.user.almacen:
+            solicitudes =  models.Solicitudes.objects.filter(department__recinto__almacen=request.user.almacen).order_by('createdAt')
+            pagin = Paginator(solicitudes,10)
+        page_num = int(request.GET.get('page', 1))
+        page = pagin.get_page(page_num)
+
+        serializer = serializers.SolicitudesSerializer(page, many=True)
+        
+        return JsonResponse({'data':serializer.data, 'items':solicitudes.count(), 'page_index':page.number}, safe=False)
+    
+    def get_solics_department_xslx(self, request, dep_id):
+        depart = get_object_or_404(models.Departamento, id=dep_id)
+        solicitudes = models.Solicitudes.objects.filter(department=depart)
+        serializer = serializers.SolicitudesSerializer(solicitudes, many=True)
+        response = utils.Services.generate_xlsx(serializer.data)
+        return response
 
     def get_department_solics(self, request):
         own = request.GET.get('own', None)
         department = request.user.department
         if own:
-            solicitudes = models.Solicitudes.objects.filter(name=request.user.name)
+            solicitudes = models.Solicitudes.objects.filter(name=request.user.name).order_by('createdAt')
         else:
-            solicitudes = models.Solicitudes.objects.filter(department=department)
+            solicitudes = models.Solicitudes.objects.filter(department=department).order_by('createdAt')
         serializer = serializers.SolicitudesSerializer(solicitudes, many=True)
         
         return JsonResponse(serializer.data, safe=False)

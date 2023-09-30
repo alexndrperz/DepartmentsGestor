@@ -2,16 +2,23 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ApiConnectService } from 'src/app/service/api-connect.service';
 import jwtDecode from 'jwt-decode';
 import { Route, Router } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
+import { FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-solicitudes-table',
   templateUrl: './solicitudes-table.component.html',
-  styleUrls: ['./solicitudes-table.component.css']
+  styleUrls: ['./solicitudes-table.component.css'],
+
 })
 export class SolicitudesTableComponent implements OnInit {
 
   ownHeaders:string[] = ['Id', 'Departamento', 'Producto','Fecha','Cantidad', 'Solicitante', 'Correo','Estatus', 'Acciones' ] 
-
+  Soptions:string[] = ['12','1231','12312','123']
+  length:number = 0;
+  myControl = new FormControl('');
+  options = ["22", "232", "asas"]
   solicitudes:any[]=[]
   filter_selection:string ="1" 
 
@@ -26,6 +33,11 @@ export class SolicitudesTableComponent implements OnInit {
     }
     
   }
+
+  filterBy(evt:MatAutocompleteSelectedEvent):void {
+    console.log(evt.option.value)
+  }
+
   getLink() {
     const tokn = sessionStorage.getItem('auth')
     let dep;
@@ -54,6 +66,10 @@ export class SolicitudesTableComponent implements OnInit {
     }
   }
 
+  goTopage(evt:PageEvent) {
+    console.log(evt)
+    this.getSolicts(evt.pageIndex+1)
+  }
 
   getSolictsEnc(parameter:string="") {
     const tokn = sessionStorage.getItem('auth')
@@ -82,12 +98,15 @@ export class SolicitudesTableComponent implements OnInit {
     
   }
 
-  getSolicts() {
-    this.apiConnect.getSecure('/solicitudes')
+  getSolicts(page:number = 1) {
+    console.log(page)
+    this.apiConnect.getSecure(`/solicitudes?page=${page}`)
     .subscribe(
       {
         next:(response:any) => {
-          this.solicitudes = response
+          console.log(response);
+          this.length = response.items
+          this.solicitudes = response.data
           
         },
         error:(error:any) => {

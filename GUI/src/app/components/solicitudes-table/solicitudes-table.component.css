@@ -1,4 +1,11 @@
 
+.inp-filters {
+    max-width: 800px;
+    display: flex;
+    gap: 40px;
+    justify-content: space-around;
+}
+
 hr {
     margin: 0.4rem 0 ;
 }
@@ -23,6 +30,12 @@ hr {
     gap: 10px;
 
 }
+
+.cont-pag-filters {
+    display: flex;
+    justify-content: space-between;
+}
+
 
 .filters p {
     font-size: 23px;

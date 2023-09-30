@@ -11,14 +11,14 @@
         </h1>
         <hr>
         <ul *ngIf ="solicitudes_view">
-            <li>Departamento: {{dep.name}}</li>
-            <li>Recinto: {{dep.recinto}}</li>
+            <li><b>Departamento:</b> {{dep.name}}</li>
+            <li><b>Recinto:</b> {{dep.recinto}}</li>
             
         </ul>
         <ul *ngIf ="!solicitudes_view">
             <li><b>Usuario:</b> {{userInfo.name}}</li>
             <li *ngIf="encargados_view"><b>Departamento:</b> {{userInfo.name}}</li>
-            <li><b>Recinto:</b> {{userInfo.almacen_name}}</li>
+            <li><b>Recinto:</b> {{userInfo.recint_name}}</li>
             
         </ul>
         <hr >
@@ -47,6 +47,9 @@
               <ul>
                 <li>
                     <b>Cantidad disponible: </b> {{item.quantity_available}}
+                </li>
+                <li>
+                    <b>Modelo: </b> {{item.model}}
                 </li>
                 <li>
                     <b>Tiempo de entrega: </b> {{item.delivered_estimated}} horas

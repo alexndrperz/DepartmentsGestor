@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './views/login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlmacenComponent } from './views/almacen/almacen.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProductsComponent } from './subviews/almacen/products/products.component';
@@ -21,6 +21,13 @@ import { EncargadosComponent } from './views/encargados/encargados.component';
 import { ProductsEncComponent } from './subviews/encargados/products-enc/products-enc.component';
 import { SolicitudesEncComponent } from './subviews/encargados/solicitudes-enc/solicitudes-enc.component';
 import { ForbbidenComponent } from './views/forbbiden/forbbiden.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import { NgFor } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -43,6 +50,7 @@ import { ForbbidenComponent } from './views/forbbiden/forbbiden.component';
     ProductsEncComponent,
     SolicitudesEncComponent,
     ForbbidenComponent,
+    PaginatorComponent,
 
 
   ],
@@ -51,7 +59,15 @@ import { ForbbidenComponent } from './views/forbbiden/forbbiden.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatPaginatorModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    NgFor,
   ],
   providers: [
     CookieService

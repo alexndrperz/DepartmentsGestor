@@ -79,6 +79,7 @@ class Empleado(models.Model):
 class Solicitudes(models.Model):
     department = models.ForeignKey(Departamento, on_delete=models.CASCADE )
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    createdAt = models.DateField(auto_now_add=True)
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     quantity_asked = models.IntegerField()

@@ -22,6 +22,7 @@ urlpatterns = [
     path('products/imagen/<int:id>', views.ProductView.as_view({'get':'get_product_image'})),
     path('encargado/products', views.ProductView.as_view({'get':'get_products_enc'})),
     path('solicitudes/', include(SolicitudesRouter.urls)),
+    path('solicitudes/department/report/<int:dep_id>', views.SolicitudesView.as_view({'get':'get_solics_department_xslx'})),
     path('solicitudes/department', views.SolicitudesView.as_view({'get':'get_department_solics'})),
     # path('solicitudes/almacen/<int:id>')
 ]
