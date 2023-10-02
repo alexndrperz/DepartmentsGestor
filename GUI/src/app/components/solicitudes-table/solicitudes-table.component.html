@@ -5,46 +5,7 @@
             Solicitudes
         </h1>
         <hr > 
-        <section class="cont-pag-filters">
-          <section class="inp-filters">
-
-
-          <mat-form-field>
-            <mat-label>Filtrar según</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let option of Soptions" [value]="option">
-                {{option}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        
-
-        <section class="autocomplete" style="max-height: 56px; overflow: hidden;">
-          <mat-form-field class="example-full-width">
-            <mat-label>Departamento</mat-label>
-            <input type="text"
-                   placeholder="Pick one"
-                   aria-label="Number"
-                   matInput
-                   [formControl]="myControl"
-                   [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="filterBy($event)">
-              <mat-option *ngFor="let option of options" [value]="option"> 
-                {{option}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </section>
-      </section>
-
-          <mat-paginator [length]="length"
-                        [pageSize]="10"
-                        aria-label="Select page" hidePageSize="true"
-                        (page)="goTopage($event)" [ngStyle]="{'max-width':'260px'}">
-          </mat-paginator>
-       </section>
-
-
+        <app-filters (changePage)="getSolicts($event) [length]="length""></app-filters>
         <section class="filters" *ngIf="encargados_view">
           <div style="display: flex; gap: 10px;">
             <p>Filtrar: </p>

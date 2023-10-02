@@ -28,6 +28,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import { NgFor } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
+import { FiltersComponent } from './components/filters/filters.component';
 
 
 
@@ -51,6 +52,7 @@ import { MatSelectModule } from '@angular/material/select';
     SolicitudesEncComponent,
     ForbbidenComponent,
     PaginatorComponent,
+    FiltersComponent,
 
 
   ],

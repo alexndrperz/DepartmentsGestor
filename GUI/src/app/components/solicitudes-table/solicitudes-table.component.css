@@ -3,7 +3,12 @@
     max-width: 800px;
     display: flex;
     gap: 40px;
+    max-height: 56px;
+    overflow: hidden;
     justify-content: space-around;
+}
+.mat-mdc-form-field {
+    display: block;
 }
 
 hr {

@@ -3,7 +3,7 @@ import { ApiConnectService } from 'src/app/service/api-connect.service';
 import jwtDecode from 'jwt-decode';
 import { Route, Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
-import { FormControl } from '@angular/forms';
+
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
@@ -15,10 +15,9 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class SolicitudesTableComponent implements OnInit {
 
   ownHeaders:string[] = ['Id', 'Departamento', 'Producto','Fecha','Cantidad', 'Solicitante', 'Correo','Estatus', 'Acciones' ] 
-  Soptions:string[] = ['12','1231','12312','123']
-  length:number = 0;
-  myControl = new FormControl('');
-  options = ["22", "232", "asas"]
+
+
+
   solicitudes:any[]=[]
   filter_selection:string ="1" 
 
@@ -34,9 +33,6 @@ export class SolicitudesTableComponent implements OnInit {
     
   }
 
-  filterBy(evt:MatAutocompleteSelectedEvent):void {
-    console.log(evt.option.value)
-  }
 
   getLink() {
     const tokn = sessionStorage.getItem('auth')
@@ -66,10 +62,7 @@ export class SolicitudesTableComponent implements OnInit {
     }
   }
 
-  goTopage(evt:PageEvent) {
-    console.log(evt)
-    this.getSolicts(evt.pageIndex+1)
-  }
+
 
   getSolictsEnc(parameter:string="") {
     const tokn = sessionStorage.getItem('auth')
@@ -105,7 +98,6 @@ export class SolicitudesTableComponent implements OnInit {
       {
         next:(response:any) => {
           console.log(response);
-          this.length = response.items
           this.solicitudes = response.data
           
         },

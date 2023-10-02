@@ -17,13 +17,13 @@ class Services:
         print(os.path.abspath('dat_pl.xlsx'))
         workbook = load_workbook(os.path.abspath('dat_pl.xlsx'))
         worksheet = workbook['Hoja1']
-        print(data)
+        print(data[0]['department']['name'])
         for row, item in enumerate(data, start=2):
             worksheet.cell(row=row, column=1, value=item['id'])
             worksheet.cell(row=row, column=2, value=item['department']['name'])
-            worksheet.cell(row=row, column=2, value=item['producto']['name'])
-            worksheet.cell(row=row, column=2, value=item['createdAt'])
-            worksheet.cell(row=row, column=2, value=item['status'])
+            worksheet.cell(row=row, column=3, value=item['producto']['name'])
+            worksheet.cell(row=row, column=4, value=item['createdAt'])
+            worksheet.cell(row=row, column=5, value=item['status'])
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename="archivo.xlsx"'
         workbook.save(response)
