@@ -1,11 +1,13 @@
 from django.shortcuts import get_object_or_404
-import os
+import os,io
 from rest_framework import viewsets, exceptions, response
 from . import models, serializers, permissions,utils
-from django.http import JsonResponse, FileResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from django.conf import settings
 import datetime, jwt
 from django.core.paginator import Paginator
+from django.db.models import Q
+
 
 class RecintoView(viewsets.ModelViewSet):
     queryset = models.Recinto.objects.all()
@@ -17,8 +19,10 @@ class ProductView(viewsets.ModelViewSet):
     queryset = models.Producto.objects.all()
     permission_classes = [permissions.ProductPermission]
     
-    def get_product_token_based(self, request):
-        return JsonResponse({})
+    def get_products_for_search(self, request):
+        productos = models.Producto.objects.all()
+        serializer = serializers.ProductNestedSerializer(productos, many=True)
+        return JsonResponse(serializer.data, safe=False) 
     
     def get_product_image(self, request, id):
         product = get_object_or_404(models.Producto, id=id)
@@ -76,6 +80,11 @@ class DepartmentView(viewsets.ModelViewSet):
         except Exception as e:
             print(e)
             return JsonResponse({'msg':'No existe'}, status=404)
+        
+    def get_departments_for_search(self, request):
+        departments = models.Departamento.objects.all()
+        serializer = serializers.DepartamentoNestedSerializer(departments,many=True)
+        return JsonResponse(serializer.data, safe=False) 
 
     def getLink(self, request,id):
         depart = get_object_or_404(models.Departamento,  id=id)
@@ -97,13 +106,36 @@ class SolicitudesView(viewsets.ModelViewSet):
         
         return JsonResponse({'data':serializer.data, 'items':solicitudes.count(), 'page_index':page.number}, safe=False)
     
-    def get_solics_department_xslx(self, request, dep_id):
-        depart = get_object_or_404(models.Departamento, id=dep_id)
-        solicitudes = models.Solicitudes.objects.filter(department=depart)
-        serializer = serializers.SolicitudesSerializer(solicitudes, many=True)
-        response = utils.Services.generate_xlsx(serializer.data)
-        return response
+    def create_report_alm(self, request):
+        typ = request.GET.get('typ',None)
+        if typ == "xls":
+            filet = utils.Services.generate_xlsx(request.data)
+        elif typ == 'pdf':
+            filet = utils.Services.generate_pdf(request.data)
+ 
+        return filet
+    
+    def search_solict(self,request):
+        query = request.GET.get('q', '')
+        typ=request.GET.get('typ','')
 
+        solicitudes = None
+        if query:
+            palabras = query.split()
+
+            if typ== "dep":
+                solicitudes = models.Solicitudes.objects.filter(department__name__icontains=query)
+            elif typ == 'prod': 
+                consulta_q = Q()
+                for palabra in palabras:
+                    consulta_q |= Q(producto__name__icontains=palabra) | Q(producto__model__icontains=palabra)
+                solicitudes = models.Solicitudes.objects.filter(consulta_q)
+        pagin = Paginator(solicitudes,10)
+        page_num = int(request.GET.get('page', 1))
+        page = pagin.get_page(page_num)
+        serializer = serializers.SolicitudesSerializer(page, many=True)
+        return JsonResponse({'data':serializer.data, 'items':solicitudes.count(), 'page_index':page.number}, safe=False)
+    
     def get_department_solics(self, request):
         own = request.GET.get('own', None)
         department = request.user.department
@@ -111,9 +143,12 @@ class SolicitudesView(viewsets.ModelViewSet):
             solicitudes = models.Solicitudes.objects.filter(name=request.user.name).order_by('createdAt')
         else:
             solicitudes = models.Solicitudes.objects.filter(department=department).order_by('createdAt')
-        serializer = serializers.SolicitudesSerializer(solicitudes, many=True)
-        
-        return JsonResponse(serializer.data, safe=False)
+
+        paginator = Paginator(solicitudes,10)
+        page_int = request.GET.get('pg',1)
+        page = paginator.get_page(page_int)
+        serializer = serializers.SolicitudesSerializer(page, many=True)
+        return JsonResponse({'data':serializer.data, 'items':solicitudes.count(), 'page_index':page.number}, safe=False)
 
     def update(self, request, pk):
         solicitud = get_object_or_404(models.Solicitudes, id=pk)

@@ -57,6 +57,11 @@ class DepartamentoSerializer(serializers.ModelSerializer):
         department = models.Departamento.objects.create(**validated_data)
         return department
 
+class DepartamentoNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Departamento
+        fields = ('id', 'name')
+
 class AlmacenSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Almacen
@@ -126,6 +131,14 @@ class ProductoSerializer(serializers.ModelSerializer):
         almacen = self.context['almacen']
         product = models.Producto.objects.create(almacen=almacen, **validated_data)
         return product
+
+
+
+class ProductNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Producto
+        fields= ('id', 'name','model')
+        
 
 class UserAdminUpdateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=False)
